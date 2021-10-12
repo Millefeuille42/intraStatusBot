@@ -1,0 +1,6 @@
+version: "3"
+services:
+  intra_status_bot:
+    build: ./
+    image: intra_status_bot
+    restart: always
