@@ -60,11 +60,6 @@ func prepFileSystem() error {
 }
 
 func main() {
-	if len(os.Args) < 2 {
-		_, _ = fmt.Fprintln(os.Stderr, "You must provide and env file")
-		return
-	}
-
 	CheckError(prepFileSystem())
 	setupFunctionsMap()
 	gBot = startBot()

@@ -24,24 +24,25 @@ func makeReqWithTimeout(url string) (*http.Response, error) {
 	go makeReqOnChannel(url, respCh, errCh)
 
 	select {
-	case resp := <- respCh:
+	case resp := <-respCh:
 		return resp, nil
-	case err := <- errCh:
+	case err := <-errCh:
 		return nil, err
-	case <- time.After(3 * time.Second):
+	case <-time.After(3 * time.Second):
 		return nil, errors.New("timeout")
 	}
 }
 
 func commandSendIntraStatus(agent discordAgent) {
-	response, err := makeReqWithTimeout("https://intra.42.fr/pommedeterre")
+	response, err := makeReqWithTimeout("https://intra.42.fr/")
 	if err != nil {
 		_, _ = fmt.Fprintln(os.Stderr, "ERROR:", err)
 		return
 	}
-	if response.StatusCode >= 200 || response.StatusCode < 400 {
-		_, _ = agent.session.ChannelMessageSend(agent.)
+	agent.channel = agent.message.ChannelID
+	if response.StatusCode >= 200 && response.StatusCode < 400 {
+		sendMessageWithMention("Intra seems up! Weird...", "", agent)
 		return
 	}
-	fmt.Println("As usual...")
+	sendMessageWithMention("Intra seems down... As usual!", "", agent)
 }
