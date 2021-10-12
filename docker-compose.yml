@@ -4,3 +4,5 @@ services:
     build: ./
     image: intra_status_bot
     restart: always
+    environment:
+      - BOT_TOKEN=${BOT_TOKEN}
