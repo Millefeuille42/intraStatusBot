@@ -34,15 +34,18 @@ func makeReqWithTimeout(url string) (*http.Response, error) {
 }
 
 func commandSendIntraStatus(agent discordAgent) {
+	t := time.Now()
 	response, err := makeReqWithTimeout("https://intra.42.fr/")
 	if err != nil {
 		_, _ = fmt.Fprintln(os.Stderr, "ERROR:", err)
 		sendMessageWithMention("Intra seems down... As usual!", "", agent)
 		return
 	}
+	responseTime := fmt.Sprintf("%d", time.Since(t).Milliseconds())
 	agent.channel = agent.message.ChannelID
 	if response.StatusCode >= 200 && response.StatusCode < 400 {
-		sendMessageWithMention("Intra seems up! Weird...", "", agent)
+		sendMessageWithMention("Intra seems up! "+
+			"("+responseTime+"ms)", "", agent)
 		return
 	}
 	sendMessageWithMention("Intra seems down... As usual!", "", agent)
