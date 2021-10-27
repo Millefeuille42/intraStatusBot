@@ -37,6 +37,7 @@ func commandSendIntraStatus(agent discordAgent) {
 	response, err := makeReqWithTimeout("https://intra.42.fr/")
 	if err != nil {
 		_, _ = fmt.Fprintln(os.Stderr, "ERROR:", err)
+		sendMessageWithMention("Intra seems down... As usual!", "", agent)
 		return
 	}
 	agent.channel = agent.message.ChannelID
